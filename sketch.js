@@ -16,6 +16,9 @@ class Jugador{
   abajo(){
     this.y += this.speed;
   }
+  setDir(dir){
+    this.y += this.y + dir;
+  }
 
   dibujar(){
     //rectMode(CENTER);
@@ -23,6 +26,7 @@ class Jugador{
   }
 
 }
+let puntos1 = 0,puntos2 = 0;
 let jugador1,jugador2; 
 
 function setup() {
@@ -33,11 +37,21 @@ function setup() {
 
 function draw() {
   background(0);
+  
   mostrar();
   mover();
   rebotar();
+  fill(255,100);
   jugador1.dibujar();
   jugador2.dibujar();
+  fill(255);
+  line(width/2,0,width/2,height);
+  textSize(50);
+  text(puntos1,width/3,60);
+  text(puntos2,width/3*2,60);
+}
+function keyReleased(){
+  
 }
 
 function keyPressed(){
@@ -54,13 +68,34 @@ function mover(){
 }
 
 function rebotar(){
+
+  if (ball.x === jugador1.x+55 && (ball.y > jugador1.y && ball.y < jugador1.y+100)){
+    ball.xSpeed = ball.xSpeed * -1;
+  }
+  if (ball.x === jugador2.x-15 && (ball.y > jugador2.y && ball.y < jugador2.y+100)){
+    ball.xSpeed = ball.xSpeed * -1;
+  }
+
   if (ball.x > width || ball.x < 0) {
     ball.xSpeed = ball.xSpeed * -1;
+    if(ball.x > width){
+      puntos1++;
+      ball.x = width/2;
+      ball.y = height/2;
+    }
+    if(ball.x < 0){
+      puntos2++;
+      ball.x = width/2;
+      ball.y = height/2;
+    }
+    
   }
   if (ball.y > height || ball.y < 0) {
     ball.ySpeed = ball.ySpeed * -1;
+    
   }
 }
+ 
 
 function mostrar(){
   stroke(255);
